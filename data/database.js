@@ -1,33 +1,22 @@
-/**
- *  Copyright (c) 2015, Facebook, Inc.
- *  All rights reserved.
- *
- *  This source code is licensed under the BSD-style license found in the
- *  LICENSE file in the root directory of this source tree. An additional grant
- *  of patent rights can be found in the PATENTS file in the same directory.
- */
+let idIncrement = 0;
+let discoveredWorlds = new Map();
 
-// Model types
-class User {}
-class Widget {}
+export class World {
+    static get(id) {
+        return discoveredWorlds.get(id);
+    }
 
-// Mock data
-var viewer = new User();
-viewer.id = '1';
-viewer.name = 'Anonymous';
-var widgets = ['What\'s-it', 'Who\'s-it', 'How\'s-it'].map((name, i) => {
-  var widget = new Widget();
-  widget.name = name;
-  widget.id = `${i}`;
-  return widget;
+    constructor({name, size}) {
+
+        this.id   = ++idIncrement;
+        this.name = name;
+        this.size = size;
+
+        discoveredWorlds.set(this.id, this);
+    }
+}
+
+new World({
+    name: 'earth',
+    size: 500
 });
-
-module.exports = {
-  // Export methods that your schema can use to interact with your database
-  getUser: (id) => id === viewer.id ? viewer : null,
-  getViewer: () => viewer,
-  getWidget: (id) => widgets.find(w => w.id === id),
-  getWidgets: () => widgets,
-  User,
-  Widget,
-};
